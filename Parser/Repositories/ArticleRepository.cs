@@ -5,11 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Parser.Contracts;
+using Parser.Data;
 
 namespace Parser.Repositories
 {
     public class ArticleRepository : IRepository<Article>
     {
+
+        private readonly AppDbContext _appDbContext;
+
+        public ArticleRepository(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
         public async Task<Article> CreateAsync(Article obj) 
         {
             try
