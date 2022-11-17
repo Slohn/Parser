@@ -25,12 +25,28 @@ namespace Parser
             HtmlWeb web = new HtmlWeb();
 
             var htmlDoc = web.Load(url);
-            var nodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='main-column']/div[@class='news-block item--animated isInView']");
-            for (int i = 0; i < 5; i++)
+            //var el = htmlDoc.DocumentNode.SelectNodes("//div[@class='page-layout']/div[@class='page-section page-section--reverse']/div[@class='main-column']/div[@class='pgnt']/div[@class='pgnt-item']");
+            var pages = htmlDoc.DocumentNode.SelectNodes("//div[@class='page-layout']/div[@class='page-section page-section--reverse']/div[@class='main-column']/div[@class='pgnt']/div[@class='pgnt-item']/a").Select(item => item.Attributes["href"].Value).ToList();
+            pages = pages.Select(item => item = "https://sarnovosti.ru" + item).ToList();
+            pages.Add(url);
+            foreach (var page in pages) 
             {
-                nodes[i].Attributes.
+                var doc = web.Load(page);
+                var nodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='main-column']/div[@class='news-block item--animated isInView']");
+                foreach (var node in nodes) 
+                {
+                    string title;
+                    string photoUrl;
+                    string date;
+                    var item = web.Load(node.ChildNodes["a"].Attributes["href"].Value);
+                    title = item.DocumentNode.SelectSingleNode("h1").InnerText;
+                    photoUrl = await SavePhotoAsync(item.DocumentNode.SelectSingleNode("div[@class='main-column']").ChildNodes["img"].Attributes["src"].Value);
+                    date = item.DocumentNode.SelectSingleNode("//div[@class='meta-group']").ChildNodes["time"].Attributes["datetime"].Value;
+                        
+                }
+
             }
-            await Repository.CreateAsync(new Article() {Date = DateTime.Now, PhotoUrl="",Title="test" });
+            stoppingToken.ThrowIfCancellationRequested();
         }
 
 
