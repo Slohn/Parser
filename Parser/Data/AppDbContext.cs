@@ -18,12 +18,12 @@ namespace Parser.Data
         }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-FAMH71F\\LOCALHOST;Initial Catalog=Parser;Integrated security=True;TrustServerCertificate=true");
-            }
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer("Data Source=DESKTOP-FAMH71F\\LOCALHOST;Initial Catalog=Parser;Integrated security=True;TrustServerCertificate=true");
+        //    }
+        //}
     }
 }

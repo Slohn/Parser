@@ -18,11 +18,12 @@ namespace Parser.Repositories
         {
             _appDbContext = appDbContext;
         }
-        public async Task<Article> CreateAsync(Article obj) 
+        public async Task CreateAsync(Article obj) 
         {
             try
             {
-                return new Article();
+                _appDbContext.Add<Article>(obj);
+                await _appDbContext.SaveChangesAsync();
             }
             catch (Exception)
             {
