@@ -52,7 +52,7 @@ namespace Parser
             await Repository.CreateAsync(model);
         }
 
-        public async Task<string> SavePhotoAsync(string url)
+        private async Task<string> SavePhotoAsync(string url)
         {
             string path ="";
             if (url != "https://sarnovosti.ru/")
