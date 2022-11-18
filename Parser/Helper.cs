@@ -11,22 +11,45 @@ namespace Parser
 
         public static DateTime GetDateFromString(string str) 
         {
-            string dateInput;
-            Dictionary<string,string> month = new Dictionary<string, string>();
-            month.Add("января", "Jan");
-            month.Add("февраля", "Feb");
-            month.Add("марта", "Mar");
-            month.Add("апреля", "Apr");
-            month.Add("мая", "May");
-            month.Add("июня", "Jun");
-            month.Add("июля", "Jul");
-            month.Add("августа", "Aug");
-            month.Add("сентября", "Sep");
-            month.Add("октября", "Oct");
-            month.Add("ноября", "Nov");
-            month.Add("декабря", "Dec");
-            month.TryGetValue(str.Split(" ").Last().ToLower(), out dateInput);
-            DateTime res = DateTime.Parse(dateInput);
+            //Dictionary<string,string> month = new Dictionary<string, string>();
+            //month.Add("января", "Jan");
+            //month.Add("февраля", "Feb");
+            //month.Add("марта", "Mar");
+            //month.Add("апреля", "Apr");
+            //month.Add("мая", "May");
+            //month.Add("июня", "Jun");
+            //month.Add("июля", "Jul");
+            //month.Add("августа", "Aug");
+            //month.Add("сентября", "Sep");
+            //month.Add("октября", "Oct");
+            //month.Add("ноября", "Nov");
+            //month.Add("декабря", "Dec");
+
+            Dictionary<string, int> month = new Dictionary<string, int>();
+            month.Add("января",1);
+            month.Add("февраля", 2);
+            month.Add("марта", 3);
+            month.Add("апреля",4);
+            month.Add("мая", 5);
+            month.Add("июня", 6);
+            month.Add("июля", 7);
+            month.Add("августа", 8);
+            month.Add("сентября", 9);
+            month.Add("октября", 10);
+            month.Add("ноября", 11);
+            month.Add("декабря", 12);
+            DateTime res;
+            if (str.Contains(","))
+            {
+                int d = int.Parse(str.Split(",").Last().Split(" ")[0]);
+                int m;
+                month.TryGetValue(str.Split(",").Last().Split(" ")[1], out m);
+                res = new DateTime( d, m, DateTime.Now.Year);
+            }
+            else 
+            {
+                res = DateTime.Now;
+            }
             return res;
         }
     }
