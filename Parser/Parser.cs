@@ -30,6 +30,7 @@ namespace Parser
             pages.Insert(0, url);
             for(int i = 0; i< pages.Count; i++)
             {
+                stoppingToken.ThrowIfCancellationRequested();
                 var nodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='main-column']/div[@class='news-block item--animated isInView']");
                 foreach (var node in nodes)
                 {
@@ -43,7 +44,6 @@ namespace Parser
                     htmlDoc = web.Load(pages[i+1]);
                 }
             }
-            stoppingToken.ThrowIfCancellationRequested();
         }
 
 
