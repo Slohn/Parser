@@ -25,24 +25,23 @@ namespace Parser
             HtmlWeb web = new HtmlWeb();
 
             var htmlDoc = web.Load(url);
-            //var el = htmlDoc.DocumentNode.SelectNodes("//div[@class='page-layout']/div[@class='page-section page-section--reverse']/div[@class='main-column']/div[@class='pgnt']/div[@class='pgnt-item']");
             var pages = htmlDoc.DocumentNode.SelectNodes("//div[@class='page-layout']/div[@class='page-section page-section--reverse']/div[@class='main-column']/div[@class='pgnt']/div[@class='pgnt-item']/a").Select(item => item.Attributes["href"].Value).ToList();
             pages = pages.Select(item => item = "https://sarnovosti.ru" + item).ToList();
             pages.Insert(0, url);
             //foreach (var page in pages) 
-            for(int i = 0; i< pages.Count; i++)
+            for(int i = 1; i< pages.Count; i++) //I = 0
             {
                 //var doc = web.Load(page);
+                htmlDoc = web.Load(pages[i]); //DELETE
                 var nodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='main-column']/div[@class='news-block item--animated isInView']");
                 foreach (var node in nodes) 
                 {
                     string title;
                     string photoUrl;
                     DateTime date;
-                    //date = Helper.GetDateFromString(node.SelectNodes("//div[@class='news-block__body']/time").InnerText);
                     date = Helper.GetDateFromString(node.ChildNodes["div"].ChildNodes["time"].InnerText);
                     title = node.ChildNodes["div"].ChildNodes["a"].InnerText;
-                    photoUrl = await SavePhotoAsync("https://sarnovosti.ru/" + node.ChildNodes["a"].ChildNodes["img"].Attributes["src"].Value);
+                    photoUrl = await SavePhotoAsync("https://sarnovosti.ru/" + node.ChildNodes["a"]?.ChildNodes["img"].Attributes["src"].Value);
                     await Repository.CreateAsync(new Article { Title = title, Date = date, PhotoUrl = photoUrl });
 
 
@@ -69,11 +68,15 @@ namespace Parser
 
         public async Task<string> SavePhotoAsync(string url)
         {
-            string fileName = url.Split('/').Last();
-            string path = Directory.GetCurrentDirectory() + fileName;
-            using (WebClient client = new WebClient())
+            string path ="";
+            if (url != "https://sarnovosti.ru/")
             {
-                client.DownloadFile(url, path);
+                string fileName = url.Split('/').Last();
+                path = Directory.GetCurrentDirectory() + fileName;
+                using (WebClient client = new WebClient())
+                {
+                    client.DownloadFile(url, path);
+                }
             }
             return path;
         }

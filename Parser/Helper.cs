@@ -39,12 +39,14 @@ namespace Parser
             month.Add("ноября", 11);
             month.Add("декабря", 12);
             DateTime res;
+            var dateInput = str.Split(",").Last().Trim().Split(" ");
             if (str.Contains(","))
             {
-                int d = int.Parse(str.Split(",").Last().Split(" ")[0]);
+                int d = int.Parse(dateInput[0]);
                 int m;
-                month.TryGetValue(str.Split(",").Last().Split(" ")[1], out m);
-                res = new DateTime( d, m, DateTime.Now.Year);
+                month.TryGetValue(dateInput[1], out m);
+                int year = DateTime.Now.Year;
+                res = new DateTime( year, m, d);
             }
             else 
             {
