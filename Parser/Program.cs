@@ -17,7 +17,6 @@ public class Program
 
         var host = Host.CreateDefaultBuilder(args).ConfigureServices((context, services) =>
         {
-            var cns = context.Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer("Data Source=DESKTOP-FAMH71F\\LOCALHOST;Initial Catalog=Parser;Integrated security=True;TrustServerCertificate=true"));
             services.AddScoped<IRepository<Article>, ArticleRepository>();
             services.AddHostedService<Parser>();
