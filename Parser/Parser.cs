@@ -33,12 +33,9 @@ namespace Parser
                 var nodes = htmlDoc.DocumentNode.SelectNodes("//div[@class='main-column']/div[@class='news-block item--animated isInView']");
                 foreach (var node in nodes)
                 {
-                    string title;
-                    string photoUrl;
-                    DateTime date;
-                    date = Helper.GetDateFromString(node.ChildNodes["div"].ChildNodes["time"].InnerText);
-                    title = node.ChildNodes["div"].ChildNodes["a"].InnerText;
-                    photoUrl = await SavePhotoAsync("https://sarnovosti.ru/" + node.ChildNodes["a"]?.ChildNodes["img"].Attributes["src"].Value);
+                    DateTime date = Helper.GetDateFromString(node.ChildNodes["div"].ChildNodes["time"].InnerText);
+                    string title = node.ChildNodes["div"].ChildNodes["a"].InnerText;
+                    string photoUrl = await SavePhotoAsync("https://sarnovosti.ru/" + node.ChildNodes["a"]?.ChildNodes["img"].Attributes["src"].Value);
                     await Repository.CreateAsync(new Article { Title = title, Date = date, PhotoUrl = photoUrl });
                 }
                 if (i != pages.Count-1)
