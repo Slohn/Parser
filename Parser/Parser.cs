@@ -46,12 +46,6 @@ namespace Parser
             }
         }
 
-
-        public async Task SaveAsync(Article model) 
-        {
-            await Repository.CreateAsync(model);
-        }
-
         private async Task<string> SavePhotoAsync(string url)
         {
             string path ="";
